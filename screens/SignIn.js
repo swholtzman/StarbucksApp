@@ -6,9 +6,12 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 
-import { useNavigation } from '@react-navigation/native';
+import { AntDesign } from "@expo/vector-icons";
+
+import { useNavigation } from "@react-navigation/native";
 
 import React from "react";
 import Header from "../components/header";
@@ -17,42 +20,44 @@ import Forgettable from "../components/greenPressable";
 import StickyButton from "../components/greenButton";
 
 export default function SignIn() {
-
   const navigation = useNavigation();
 
   return (
     <>
-      <Header 
-        title="Sign in to Rewards" 
-        iconName="close" 
-        functionHandler={() => navigation.navigate('Landing')} 
+      <ScrollView>
+        <Header
+          title="Sign in to Rewards"
+          iconName="close"
+          functionHandler={() => navigation.navigate("Landing")}
         />
 
-      <View style={styles.inputContainer}>
-        <InputLine
-            title="Email or username"
+        <View style={styles.inputContainer}>
+          <InputLine title="Email or username" style={styles.inputLine} />
+          <InputLine
+            class="password"
+            title="Password"
             style={styles.inputLine}
-        />
-        <InputLine class="password" 
-            title="Password" 
-            style={styles.inputLine} 
             mainIcon={"visibility-off"}
             secondaryIcon={"visibility"}
-            functionHandler={null}/>
-      </View>
+            functionHandler={null}
+          />
+        </View>
 
-      <View style={styles.forgettableContainer}>
-        <Forgettable 
-            title="Forgot password?" 
-            style={styles.forgettableLines} />
-        <Forgettable 
-            title="Forgot username?" 
-            style={styles.forgettableLines} />
-      </View>
-
+        <View style={styles.forgettableContainer}>
+          <Forgettable
+            title="Forgot password?"
+            style={styles.forgettableLines}
+          />
+          <Forgettable
+            title="Forgot username?"
+            style={styles.forgettableLines}
+          />
+        </View>
+      </ScrollView>
+      
       <View style={styles.buttonContainer}>
-        <StickyButton title={ "Join now" } />
-      </View>
+          <StickyButton title={"Sign in"} />
+        </View>
     </>
   );
 }
@@ -64,7 +69,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputContainer: {
-    paddingTop: 25,
+    padding: 25,
   },
   inputLine: {},
   forgettableContainer: {
@@ -83,5 +88,5 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 50,
     right: 15,
-  }
+  },
 });

@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-starbucksapplication-staging-51925-authRole",
+      "UnauthRoleArn": "arn:aws:iam::371231817496:role/amplify-starbucksapplication-staging-51925-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::371231817496:role/amplify-starbucksapplication-staging-51925-authRole",
+      "Region": "ca-central-1",
+      "DeploymentBucketName": "amplify-starbucksapplication-staging-51925-deployment",
+      "UnauthRoleName": "amplify-starbucksapplication-staging-51925-unauthRole",
+      "StackName": "amplify-starbucksapplication-staging-51925",
+      "StackId": "arn:aws:cloudformation:ca-central-1:371231817496:stack/amplify-starbucksapplication-staging-51925/96d66ab0-e28b-11ee-88ac-0e89492f3415",
+      "AmplifyAppId": "d2icrysre9zf3r"
+    },
+    "categories": {
+      "auth": {
+        "StarbucksApplication": {}
+      }
+    }
+  }
+}

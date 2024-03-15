@@ -1,0 +1,17 @@
+{
+  "providers": [
+    "awscloudformation"
+  ],
+  "projectName": "StarbucksApplication",
+  "version": "3.1",
+  "frontend": "javascript",
+  "javascript": {
+    "framework": "react-native",
+    "config": {
+      "SourceDir": "/Users/samholtzman/Desktop/StarbucksApp",
+      "DistributionDir": "/",
+      "BuildCommand": "echo \"No build needed for React Native\"",
+      "StartCommand": "echo \"No start command needed\""
+    }
+  }
+}

@@ -2,14 +2,13 @@ import { StyleSheet, View, Text, Button } from "react-native";
 import React from "react";
 import IconButton from "./iconTextButton";
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 export default function Header() {
-
-const navigation = useNavigation();
+  const navigation = useNavigation();
 
   return (
-    <View>
+    <View style={styles.container}>
       {/* header starts */}
       <View style={styles.header}>
         <View>
@@ -23,23 +22,23 @@ const navigation = useNavigation();
               title="Sign in"
               simpleName="login"
               evilName={null}
-              functionHandler={() => navigation.navigate('SignIn')} 
-              />
+              functionHandler={() => navigation.navigate("SignIn")}
+            />
             <IconButton
               title="Inbox"
               simpleName={null}
               evilName="envelope"
-              functionHandler={() => navigation.push('Inbox')} 
-              />
+              functionHandler={() => navigation.push("Inbox")}
+            />
           </View>
 
           <View style={styles.profileButton}>
-            <IconButton 
-                title={null}
-                simpleName={null}
-                evilName="user"
-                functionHandler={() => navigation.push('Profile')} 
-             />
+            <IconButton
+              title={null}
+              simpleName={null}
+              evilName="user"
+              functionHandler={() => navigation.push("Profile")}
+            />
           </View>
         </View>
       </View>
@@ -49,6 +48,11 @@ const navigation = useNavigation();
 }
 
 const styles = StyleSheet.create({
+  container: {
+    // shadowRadius: 2,
+    // shadowColor: "black",
+    // shadowOpacity: 80,
+  },
   header: {
     width: "100%",
     alignItems: "center",
@@ -70,7 +74,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: '105%',
+    width: "105%",
     paddingTop: "7%",
     paddingLeft: 40,
   },
