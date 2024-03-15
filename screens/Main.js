@@ -1,13 +1,10 @@
-// Inbox.js in ./screens/Inbox.js
 import { StyleSheet, View, Text } from 'react-native';
 import React from 'react';
 
-import { useNavigation } from '@react-navigation/native';
-
-export default function Inbox() {
+export default function MainPage() {
   return (
     <View> 
-      <Text>Inbox</Text>
+      <Text>Main Page</Text>
     </View>
   );
 }

@@ -1,3 +1,4 @@
+// Landing.js in ./screens/Landing.js
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,

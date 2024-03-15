@@ -1,3 +1,4 @@
+// whiteButton.tsx in ./components/whiteButton.tsx
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 

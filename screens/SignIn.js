@@ -1,26 +1,31 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
-
-import { AntDesign } from "@expo/vector-icons";
-
-import { useNavigation } from "@react-navigation/native";
-
+// SignIn.js
 import React from "react";
+import { ScrollView, View, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Auth } from 'aws-amplify';
+
 import Header from "../components/header";
-import InputLine from "../components/inputLine";
+import EmailInput from "../components/emailInput";
+import PasswordInput from "../components/passwordInput";
 import Forgettable from "../components/greenPressable";
 import StickyButton from "../components/greenButton";
+import { useFormContext } from "./FormContext";
 
 export default function SignIn() {
   const navigation = useNavigation();
+  const { formData } = useFormContext();
+
+  const signInHandler = async () => {
+    const { email, password } = formData;
+    try {
+      const user = await Auth.signIn(email, password);
+      console.log('Sign in success', user);
+      navigation.navigate("Main"); // Adjust with your main screen route
+    } catch (error) {
+      console.error('error signing in', error);
+      // Handle error (e.g., show error message to the user)
+    }
+  };
 
   return (
     <>
@@ -28,36 +33,30 @@ export default function SignIn() {
         <Header
           title="Sign in to Rewards"
           iconName="close"
-          functionHandler={() => navigation.navigate("Landing")}
+          functionHandler={() => navigation.goBack()}
         />
-
         <View style={styles.inputContainer}>
-          <InputLine title="Email or username" style={styles.inputLine} />
-          <InputLine
-            class="password"
-            title="Password"
-            style={styles.inputLine}
-            mainIcon={"visibility-off"}
-            secondaryIcon={"visibility"}
-            functionHandler={null}
-          />
-        </View>
+          <EmailInput inputName="email" title="Email" />
+          <PasswordInput 
+              inputName="password"
+              class="password"
+              title="Password"
 
+              style={styles.inputLine}
+
+              mainIcon={"visibility-off"}
+              secondaryIcon={"visibility"}
+              functionHandler={null}
+            />
+        </View>
         <View style={styles.forgettableContainer}>
-          <Forgettable
-            title="Forgot password?"
-            style={styles.forgettableLines}
-          />
-          <Forgettable
-            title="Forgot username?"
-            style={styles.forgettableLines}
-          />
+          <Forgettable title="Forgot password?" />
+          <Forgettable title="Forgot username?" />
         </View>
       </ScrollView>
-      
       <View style={styles.buttonContainer}>
-          <StickyButton title={"Sign in"} />
-        </View>
+        <StickyButton title={"Sign in"} functionHandler={signInHandler} />
+      </View>
     </>
   );
 }

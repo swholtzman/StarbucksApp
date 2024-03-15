@@ -1,25 +1,52 @@
+// JoinNow.js in ./screens/JoinNow.js
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import React, { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 import Section from "../components/sectionHeader";
-import InputLine from "../components/inputLine";
 import GreenText from "../components/greenPressable";
 import GreenButton from "../components/greenButton";
 import IconSwitch from "../components/switchingIcons";
 import CheckBox from "../components/checkbox";
-import FirstName from "../components/fNameInput";
-import LastName from "../components/lNameInput";
+import FirstNameInput from "../components/fNameInput";
+import LastNameInput from "../components/lNameInput";
 import EmailInput from "../components/emailInput";
-import Password from "../components/passwordInput";
+import PasswordInput from "../components/passwordInput";
 
-import { useNavigation } from "@react-navigation/native";
+import { useFormContext } from "./FormContext";
+import { handleSignUp } from "./HandleFormSubmit";
+import { validateEmail, validatePassword } from "./ValidationUtility";
 
 export default function JoinNow() {
+  const { formData, setFormData } = useFormContext();
   const navigation = useNavigation();
   const [isEmailSelected, setIsEmailSelected] = useState(false);
   const [isFasterSelected, setIsFasterSelected] = useState(false);
   const [isTermsSelected, setIsTermsSelected] = useState(false);
+
+  const handleFormSubmit = async () => {
+    if (
+      !isTermsSelected ||
+      !validateEmail(formData.email) ||
+      !validatePassword(formData.password)
+    ) {
+      console.error("Validation failed");
+      return; // Exit early if validation fails
+    }
+
+    try {
+      await handleSignUp({
+        email: formData.email,
+        password: formData.password,
+        fName: formData.given_name,
+        lName: formData.family_name,
+      });
+      navigation.navigate("Main");
+    } catch (error) {
+      console.error("Error during form submission:", error);
+    }
+  };
 
   return (
     <View style={styles.background}>
@@ -40,16 +67,19 @@ export default function JoinNow() {
           <Section title={"Personal info"} style={styles.sections} />
 
           <View style={styles.inputContainer}>
-            <InputLine
-              class="fName"
+            <FirstNameInput
+              inputName="given_name"
               title="First name"
-              style={styles.inputLine}
+              onChangeText={(text) =>
+                setFormData({ ...formData, given_name: text })
+              }
             />
-
-            <InputLine
-              class="lName"
+            <LastNameInput
+              inputName="family_name"
               title="Last name"
-              style={styles.inputLine}
+              onChangeText={(text) =>
+                setFormData({ ...formData, family_name: text })
+              }
             />
           </View>
 
@@ -66,11 +96,23 @@ export default function JoinNow() {
           <Section title={"Security"} style={styles.sections} />
 
           <View style={styles.inputContainer}>
-            <EmailInput style={styles.inputLine} />
-            <InputLine
+            <EmailInput
+              inputName="email"
+              title="Email"
+              
+              onChangeText={(text) => setFormData({ ...formData, email: text })}
+            />
+
+            <PasswordInput
+              inputName="password"
               class="password"
               title="Password"
+
               style={styles.inputLine}
+              onChangeText={(text) =>
+                setFormData({ ...formData, password: text })
+              }
+
               mainIcon={"visibility-off"}
               secondaryIcon={"visibility"}
               functionHandler={null}
@@ -82,13 +124,14 @@ export default function JoinNow() {
           <View style={styles.termsContainer}>
             <Section title={"Terms"} style={styles.sections} />
 
+            {/* CHECKBOXES BEGIN */}
             <View style={styles.checkboxContainer}>
               <CheckBox
                 text="Yes, I'd like emails from Starbucks (optional)"
                 caption="Know about product offers, 
                         announcements, and initiatives."
                 isChecked={isEmailSelected}
-                onPress={() => setIsEmailSelected(!isEmailSelected)} 
+                onPress={() => setIsEmailSelected(!isEmailSelected)}
                 style={styles.checkbox}
               />
               <CheckBox
@@ -96,7 +139,7 @@ export default function JoinNow() {
                 caption="Use Face ID and iCloud Keychain to sign in, authorize 
                         purchases, preloads, and more."
                 isChecked={isFasterSelected}
-                onPress={() => setIsFasterSelected(!isFasterSelected)} 
+                onPress={() => setIsFasterSelected(!isFasterSelected)}
                 style={styles.checkbox}
               />
               <CheckBox
@@ -105,30 +148,31 @@ export default function JoinNow() {
                         Starbucks Card Terms, the Aplication Terms, and have 
                         read the iOS Privacy Statement"
                 isChecked={isTermsSelected}
-                onPress={() => setIsTermsSelected(!isTermsSelected)} 
-                style={styles.checkbox} 
+                onPress={() => setIsTermsSelected(!isTermsSelected)}
+                style={styles.checkbox}
               />
             </View>
+            {/* CHECKBOXES END */}
 
+            {/* GREEN LINES BEGIN */}
             <View style={styles.greenContainer}>
-              <GreenText 
-                title="Rewards Terms" 
-                style={styles.greenLines} />
-              <GreenText 
-                title="Application Terms" 
-                style={styles.greenLines} />
-              <GreenText
-                title="Card Terms" 
-                style={styles.greenLines} />
-              <GreenText 
-                title="Privacy Statement" 
-                style={styles.greenLines} />
+              <GreenText title="Rewards Terms" style={styles.greenLines} />
+              <GreenText title="Application Terms" style={styles.greenLines} />
+              <GreenText title="Card Terms" style={styles.greenLines} />
+              <GreenText title="Privacy Statement" style={styles.greenLines} />
             </View>
+            {/* GREEN LINES END */}
           </View>
 
+          {/* GREEN SUBMISSION BUTTON BEGINS */}
           <View style={styles.greenButtonContainer}>
-            <GreenButton title="Create Account" style={styles.greenButton} />
+            <GreenButton
+              title="Create Account"
+              style={styles.greenButton}
+              onPress={handleFormSubmit}
+            />
           </View>
+          {/* GREEN SUBMISSION BUTTON ENDS */}
 
           {/* TERMS SECTION ENDS */}
         </View>
@@ -185,12 +229,11 @@ const styles = StyleSheet.create({
   },
   checkboxContainer: {
     paddingTop: 20,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     height: 300,
     paddingBottom: 30,
   },
-  checkbox: {
-  },
+  checkbox: {},
   greenContainer: {
     paddingHorizontal: 40,
     justifyContent: "space-between",
